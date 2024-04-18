@@ -1,10 +1,10 @@
 from Networks import *
-from PrioritizedExperienceReplay import *
+from ExperienceReplay import *
 import copy
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-class softActorCriticPER(nn.Module):
+class softActorCriticContinuous(nn.Module):
     def __init__(self, stateDim,
                  actionDim,
                  hiddenDim,
@@ -18,7 +18,7 @@ class softActorCriticPER(nn.Module):
                  criticLr = 1e-3,
                  actorLr=1e-4,
                  alphaLr=3e-5):
-        super(softActorCriticPER, self).__init__()
+        super(softActorCriticContinuous, self).__init__()
         
         '''
         This code defines the softActorCritic class, which implements the Soft Actor Critic (SAC) algorithm.
