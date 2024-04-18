@@ -5,13 +5,13 @@ env = gym.make('CartPole-v1', render_mode="human")
 stateDim = env.observation_space.shape[0]
 actionDim = env.action_space.n
 
-agent = vanillaPPOClipDiscrete(stateDim=stateDim,
-                               actionDim=actionDim,
-                               hiddenDim=128,
-                               numHiddenLayers=2,
-                               eps=0.15,
-                               policyLr=1e-4,
-                               valueLr=1e-3)
+agent = ppoClipDiscrete(stateDim=stateDim,
+                        actionDim=actionDim,
+                        hiddenDim=32,
+                        numHiddenLayers=2,
+                        eps=0.1,
+                        policyLr=1e-4,
+                        valueLr=1e-3)
 
 agent.load('best')
 
