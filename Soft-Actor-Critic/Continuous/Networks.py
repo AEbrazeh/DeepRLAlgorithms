@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from torch.distributions.normal import Normal
 
 class baseNet(nn.Module):
     """
@@ -126,11 +125,11 @@ class actorNetwork(nn.Module):
         Args:
             state (torch.Tensor): State tensor.
         Returns:
-            tuple: A tuple containing the mean (mu) and standard deviation (sigma) of the action distribution.
+            torch.distributions.Normal: Action distribution.
         """
         mu, logStd = self.network(state).split(self.actionDim, dim = -1)
         std = (logStd.clamp(-10, 1)).exp()
-        return mu, std
+        return torch.distributions.Normal(mu, std)
     
     def sample(self, state, a_min, a_max, grad=True):
         """
@@ -145,12 +144,12 @@ class actorNetwork(nn.Module):
             tuple: A tuple containing the sampled action (torch.Tensor) and the log probability (torch.Tensor) of the action.
         """
         e = 1e-12
-        N = Normal(*self(state))
+        dist = self(state)
         
-        if grad: a = N.rsample()
-        else: a = N.sample()
+        if grad: a = dist.rsample()
+        else: a = dist.sample()
         
-        logProb = (N.log_prob(a) - (1 - a.tanh()**2 + e).log()).sum(-1, keepdim=True)
+        logProb = (dist.log_prob(a) - (1 - a.tanh()**2 + e).log()).sum(-1, keepdim=True)
         action = torch.tanh(a) * (a_max - a_min) / 2 + (a_max + a_min) / 2
         return action, logProb
 

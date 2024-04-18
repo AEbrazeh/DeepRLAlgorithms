@@ -40,10 +40,10 @@ class ppoClipDiscrete(nn.Module):
         self.lambda_ = lambda_
         self.eps = eps
         
-        self.valueNet = valueNetwork(stateDim, hiddenDim, numHiddenLayers).to(device)
-        self.valueOptim = torch.optim.Adam(self.valueNet.parameters(), valueLr, eps=1e-5)        
-        self.policyNet = policyNetwork(stateDim, actionDim, hiddenDim, numHiddenLayers).to(device)
-        self.policyOptim = torch.optim.Adam(self.policyNet.parameters(), policyLr, eps=1e-5)
+        self.critic = criticNetwork(stateDim, hiddenDim, numHiddenLayers).to(device)
+        self.criticOptim = torch.optim.Adam(self.critic.parameters(), valueLr, eps=1e-5)        
+        self.actor = actorNetwork(stateDim, actionDim, hiddenDim, numHiddenLayers).to(device)
+        self.actorOptim = torch.optim.Adam(self.actor.parameters(), policyLr, eps=1e-5)
 
     def store(self, s, a, r, s_, d, p, isLastStep):
         """
@@ -76,11 +76,11 @@ class ppoClipDiscrete(nn.Module):
             p (numpy.ndarray): Old action probability.
             adv (numpy.ndarray): Generalized Advantage Estimation (GAE) advantage.
         """
-        self.policyOptim.zero_grad(True)
-        r = (self.policyNet(s).log_prob(a) - p).exp()
+        self.actorOptim.zero_grad(True)
+        r = (self.actor(s).log_prob(a) - p).exp()
         L = -torch.where((r - 1).abs() <= self.eps, r * adv, r.clamp(1 - self.eps, 1 + self.eps) * adv).mean()
         L.backward()
-        self.policyOptim.step()
+        self.actorOptim.step()
 
     def updateValue(self, s, v, adv):
         """
@@ -91,12 +91,12 @@ class ppoClipDiscrete(nn.Module):
             v (numpy.ndarray): Estimated state value.
             adv (numpy.ndarray): Generalized Advantage Estimation (GAE) advantage.
         """
-        self.valueOptim.zero_grad(True)
+        self.criticOptim.zero_grad(True)
         rtg = adv + v
-        value = self.valueNet(s).squeeze()
+        value = self.critic(s).squeeze()
         L = (value - rtg).pow(2).mean()
         L.backward()
-        self.valueOptim.step()
+        self.criticOptim.step()
         
     @torch.no_grad()
     def __call__(self, s):
@@ -110,7 +110,7 @@ class ppoClipDiscrete(nn.Module):
             np.ndarray: Log probability of the chosen action.
         """
         state = torch.from_numpy(s).to(device)
-        action, prob = self.policyNet.sample(state)
+        action, prob = self.actor.sample(state)
         return action.detach().cpu().numpy(), prob.detach().cpu().numpy()
     
     def learn(self, nEpoch, batchSize):
@@ -133,7 +133,7 @@ class ppoClipDiscrete(nn.Module):
         
         # Calculate the value function for the next state
         with torch.no_grad():
-            value = self.valueNet(torch.tensor(state, dtype=torch.float32, device=device)).squeeze().cpu().numpy()
+            value = self.critic(torch.tensor(state, dtype=torch.float32, device=device)).squeeze().cpu().numpy()
         
         # Identify the indices where an episode ends
         doneIndex = np.where(np.max((done, last), axis=0)==1)[0]
@@ -190,8 +190,8 @@ class ppoClipDiscrete(nn.Module):
         Args:
             file (str): The base file path to which 'Policy.pth' and 'Value.pth' will be appended.
         """
-        self.policyNet.save(file+'Policy.pth')
-        self.valueNet.save(file+'Value.pth')
+        self.actor.save(file+'Policy.pth')
+        self.critic.save(file+'Value.pth')
         
     def load(self, file):
         """
@@ -199,5 +199,5 @@ class ppoClipDiscrete(nn.Module):
         Args:
             file (str): The base file path from which 'Policy.pth' and 'Value.pth' will be loaded.
         """
-        self.policyNet = torch.load(file+'Policy.pth')
-        self.valueNet = torch.load(file+'Value.pth')
+        self.actor = torch.load(file+'Policy.pth')
+        self.critic = torch.load(file+'Value.pth')

@@ -12,7 +12,7 @@ agent = ppoRollbackDiscrete(stateDim=stateDim,
                             eps=0.1,
                             policyLr=1e-4,
                             valueLr=1e-3)
-print("Model built successfully! Actor Parameters = {}, Critics Parameters = {}".format(sum(p.numel() for p in agent.policyNet.parameters() if p.requires_grad), 2 * sum(p.numel() for p in agent.valueNet.parameters() if p.requires_grad)))
+print("Model built successfully! Actor Parameters = {}, Critics Parameters = {}".format(sum(p.numel() for p in agent.actor.parameters() if p.requires_grad), 2 * sum(p.numel() for p in agent.critic.parameters() if p.requires_grad)))
 
 tGame = 500
 nGames = 100

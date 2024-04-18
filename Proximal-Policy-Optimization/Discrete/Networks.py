@@ -38,9 +38,9 @@ class baseNetOrthogonal(nn.Module):
     def forward(self, x):
         return self.network(x)
     
-class valueNetwork(nn.Module):
+class criticNetwork(nn.Module):
     """
-    Value network with orthogonal initialization for state value estimation.
+    Critic network with orthogonal initialization for state value estimation.
 
     Args:
         stateDim (int): Dimensionality of the state space.
@@ -48,7 +48,7 @@ class valueNetwork(nn.Module):
         numHiddenLayers (int): Number of hidden layers in the neural networks.
     """
     def __init__(self, stateDim, HiddenDim, numHiddenLayers):
-        super(valueNetwork, self).__init__()
+        super(criticNetwork, self).__init__()
         layersDim = [stateDim]
         layersDim += [HiddenDim for _ in range(numHiddenLayers)]
         layersDim.append(1)
@@ -69,9 +69,9 @@ class valueNetwork(nn.Module):
     def save(self, file):
         torch.save(self, file)
         
-class policyNetwork(nn.Module):
+class actorNetwork(nn.Module):
     """
-    Policy network with orthogonal initialization for action selection.
+    Actor network with orthogonal initialization for action selection.
 
     Args:
         stateDim (int): Dimensionality of the state space.
@@ -80,7 +80,7 @@ class policyNetwork(nn.Module):
         numHiddenLayers (int): Number of hidden layers in the neural networks.
     """
     def __init__(self, stateDim, actionDim, HiddenDim, numHiddenLayers):
-        super(policyNetwork, self).__init__()
+        super(actorNetwork, self).__init__()
         layersDim = [stateDim]
         layersDim += [HiddenDim for _ in range(numHiddenLayers)]
         layersDim.append(actionDim)

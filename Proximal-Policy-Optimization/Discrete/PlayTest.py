@@ -15,7 +15,7 @@ agent = ppoClipDiscrete(stateDim=stateDim,
 
 agent.load('best')
 
-print("Model built successfully! Actor Parameters = {}, Critics Parameters = {}".format(sum(p.numel() for p in agent.policyNet.parameters() if p.requires_grad), 2 * sum(p.numel() for p in agent.valueNet.parameters() if p.requires_grad)))
+print("Model built successfully! Actor Parameters = {}, Critics Parameters = {}".format(sum(p.numel() for p in agent.actor.parameters() if p.requires_grad), 2 * sum(p.numel() for p in agent.critic.parameters() if p.requires_grad)))
 
 reward = 0
 s_, _ = env.reset()

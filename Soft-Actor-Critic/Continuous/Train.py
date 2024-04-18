@@ -5,16 +5,16 @@ import matplotlib.pyplot as plt
 env = gym.make('Pendulum-v1')#, render_mode="human")
 stateDim = env.observation_space.shape[0]
 actionDim = env.action_space.shape[0]
-agent = softActorCritic(stateDim=stateDim,
-                        actionDim=actionDim,
-                        actionMin=-1,
-                        actionMax=1,
-                        hiddenDim=128,
-                        numHiddenLayers=6,
-                        criticLr=6e-4,
-                        actorLr=1e-4,
-                        alphaLr=1e-4,
-                        alpha = 0.2)
+agent = softActorCriticContinuous(stateDim=stateDim,
+                                  actionDim=actionDim,
+                                  actionMin=-1,
+                                  actionMax=1,
+                                  hiddenDim=128,
+                                  numHiddenLayers=2,
+                                  alpha = 0.2,
+                                  criticLr=6e-4,
+                                  actorLr=1e-4,
+                                  alphaLr=1e-4)
 #agent.load('last')
 
 numEpisodes = 1000
