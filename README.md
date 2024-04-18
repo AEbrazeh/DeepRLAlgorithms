@@ -13,9 +13,10 @@ This repository is dedicated to the implementation and exploration of various De
     + Continuous action-space:
         * Vanilla Experience Replay
         * Prioritized Experience Replay
-- Proximal Policy Optimization
-     + Discrete Action-space
-          * Vanilla
+- Proximal Policy Optimization (PPO):
+     + Discrete Action-space:
+          * Clip (Vanilla)
+          * Rollback
 - More algorithms will be added.
 ### Prerequisites
 
