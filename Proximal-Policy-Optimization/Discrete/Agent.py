@@ -7,8 +7,8 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 class ppoClipDiscrete(nn.Module):
     """
     Proximal Policy Optimization with Clipped Surrogate (PPO-Clip) with Generalized Advantage Estimation (GAE) for environments with discrete action-space.
-    Based on "Proximal Policy Optimization Algorithms" by John Schulman et al. and "High-Dimensional Continuous Control Using Generalized Advantage Estimation" by John Schulman et al.
-
+    Based on "Proximal Policy Optimization Algorithms" (https://arxiv.org/abs/1707.06347) by John Schulman et al. and "High-Dimensional Continuous Control Using Generalized Advantage Estimation" (https://arxiv.org/abs/1506.02438) by John Schulman et al.
+    
     Args:
         stateDim (int): Dimensionality of the state space.
         actionDim (int): Dimensionality of the action space.
