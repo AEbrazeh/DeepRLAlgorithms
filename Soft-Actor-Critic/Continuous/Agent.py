@@ -21,7 +21,7 @@ class softActorCriticContinuous(nn.Module):
         super(softActorCriticContinuous, self).__init__()
         
         '''
-        This code defines the softActorCritic class, which implements the Soft Actor Critic (SAC) algorithm.
+        This code defines the softActorCritic class, which implements the Soft Actor Critic (SAC) algorithm for environments with continuous action-space.
         It is based on the paper "Soft Actor-Critic Algorithms and Applications" by Haarnoja et al. (https://arxiv.org/abs/1812.05905)
         
         Args:

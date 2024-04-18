@@ -23,7 +23,7 @@ class softActorCriticContinuousPER(nn.Module):
                  alphaLr=3e-5):
         super(softActorCriticContinuousPER, self).__init__()
         '''
-        This code defines the softActorCriticPER class, which implements the Soft Actor Critic (SAC) algorithm with Priotized Experience Replay.
+        This code defines the softActorCriticPER class, which implements the Soft Actor Critic (SAC) algorithm with Priotized Experience Replay for environments with continuous action-space.
         It is based on the paper "Soft Actor-Critic Algorithms and Applications" by Haarnoja et al. (https://arxiv.org/abs/1812.05905)
         and also Priotorized Experience Replay by Schaul et al. (https://arxiv.org/abs/1511.05952)
         
