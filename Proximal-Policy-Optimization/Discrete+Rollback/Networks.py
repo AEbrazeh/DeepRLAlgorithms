@@ -98,5 +98,20 @@ class policyNetwork(nn.Module):
         """
         return torch.distributions.Categorical(logits=self.network(state))
     
+    def sample(self, state):
+        """
+        Samples an action from the actor's policy and calculates the log probability.
+        Args:
+            state (torch.Tensor): State tensor.
+
+        Returns:
+            tuple: A tuple containing the sampled action (torch.Tensor) and the log probability (torch.Tensor) of the action.
+        """
+        dist = self(state)
+        action = dist.sample()
+        logProb = dist.log_prob(action)
+        
+        return action, logProb
+    
     def save(self, file):
         torch.save(self, file)

@@ -113,9 +113,7 @@ class ppoRollbackDiscrete(nn.Module):
             np.ndarray: Log probability of the chosen action.
         """
         state = torch.from_numpy(s).to(device)
-        policy = self.policyNet(state)
-        action = policy.sample()
-        prob = policy.log_prob(action)
+        action, prob = self.policyNet.sample(state)
         return action.detach().cpu().numpy(), prob.detach().cpu().numpy()
     
     def learn(self, nEpoch, batchSize):
