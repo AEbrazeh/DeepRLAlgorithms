@@ -27,7 +27,6 @@ class ppoClipDiscreteSampleReuse(nn.Module):
                  numHiddenLayers=2,
                  eps = 0.2,
                  gamma=0.99,
-                 alpha = 0.3,
                  lambda_ = 0.9,
                  valueLr=2.5e-4,
                  policyLr=2.5e-4):
