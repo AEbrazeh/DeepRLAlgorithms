@@ -71,10 +71,10 @@ class ppoClipDiscrete(nn.Module):
         Updates the policy network by computing the PPO loss and performing gradient descent.
 
         Args:
-            s (numpy.ndarray): Current state.
-            a (numpy.ndarray): Chosen action.
-            p (numpy.ndarray): Old action probability.
-            adv (numpy.ndarray): Generalized Advantage Estimation (GAE) advantage.
+            s (torch.Tensor): Current state.
+            a (torch.Tensor): Chosen action.
+            p (torch.Tensor): Old action probability.
+            adv (torch.Tensor): Generalized Advantage Estimation (GAE) advantage.
         """
         self.actorOptim.zero_grad(True)
         r = (self.actor(s).log_prob(a) - p).exp()
@@ -87,9 +87,9 @@ class ppoClipDiscrete(nn.Module):
         Updates the value network by computing the value loss and performing gradient descent.
 
         Args:
-            s (numpy.ndarray): Current state.
-            v (numpy.ndarray): Estimated state value.
-            adv (numpy.ndarray): Generalized Advantage Estimation (GAE) advantage.
+            s (torch.Tensor): Current state.
+            v (torch.Tensor): Estimated state value.
+            adv (torch.Tensor): Generalized Advantage Estimation (GAE) advantage.
         """
         self.criticOptim.zero_grad(True)
         rtg = adv + v
