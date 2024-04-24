@@ -17,6 +17,8 @@ This repository is dedicated to the implementation and exploration of various De
      + Discrete Action-space:
           * Clip (Vanilla)
           * Rollback
+          * Sample Reuse
+          * Sample Reuse + Rollback
 - More algorithms will be added.
 ### Prerequisites
 
