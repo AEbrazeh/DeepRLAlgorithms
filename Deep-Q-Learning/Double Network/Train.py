@@ -12,7 +12,6 @@ batchSize = 512
 minibatchSize = 64
 numMiniBatch = np.ceil(batchSize/minibatchSize).astype(int)
 startSteps = 256
-rewardHist = np.zeros(numEpisodes)
 
 rewardHist = np.zeros(numEpisodes)
 

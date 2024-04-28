@@ -14,9 +14,6 @@ numMiniBatch = np.ceil(batchSize/minibatchSize).astype(int)
 startSteps = 256
 rewardHist = np.zeros(numEpisodes)
 
-episodeLength = 1000
-rewardHist = np.zeros((numEpisodes, episodeLength))
-
 numSteps = 0
 bestScore = -np.inf
 for ii in range(numEpisodes):

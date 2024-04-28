@@ -37,7 +37,7 @@ class ExperienceReplay:
         self.actionDim = actionDim
         
         self.state = torch.zeros((bufferSize, stateDim), dtype=torch.float32)
-        self.action = torch.zeros((bufferSize, actionDim), dtype=torch.float32)
+        self.action = torch.zeros((bufferSize, actionDim), dtype=torch.int32)
         self.reward = torch.zeros((bufferSize, 1), dtype=torch.float32)
         self.done = torch.zeros((bufferSize, 1), dtype=torch.float32)
         self.state_ = torch.zeros((bufferSize, stateDim), dtype=torch.float32)
