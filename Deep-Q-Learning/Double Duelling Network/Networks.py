@@ -26,7 +26,7 @@ class baseNet(nn.Module):
 class qNetworkDuelling(nn.Module):
     def __init__(self, stateDim, actionDim, hiddenDim, numHiddenLayers):
         """
-        Initialize the Q-network with the given state dimension, hidden dimension, and number of hidden layers.
+        Initialize the Duelling Q-network with the given state dimension, hidden dimension, and number of hidden layers.
         """
         super(qNetworkDuelling, self).__init__()
         layersDim = [stateDim]

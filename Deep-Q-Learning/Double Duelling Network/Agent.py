@@ -6,7 +6,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class deepQLearningDoubleDuelling(nn.Module):
     """
-    Implementation of a deep Q-learning agent with a double Q-network based on "Deep Reinforcement Learning with Double Q-learning" (https://arxiv.org/abs/1509.06461) by van Hasselt et al.
+    Implementation of a deep Q-learning agent with a duelling double Q-network based on "Deep Reinforcement Learning with Double Q-learning" (https://arxiv.org/abs/1509.06461) by van Hasselt et al and "Dueling Network Architectures for Deep Reinforcement Learning" (https://arxiv.org/abs/1511.06581) by Wang et al.
 
     Args:
         stateDim (int): Dimensionality of the state space.
