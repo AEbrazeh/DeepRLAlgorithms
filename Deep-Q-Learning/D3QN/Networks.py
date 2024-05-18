@@ -29,18 +29,12 @@ class qNetworkDuelling(nn.Module):
         Initialize the Duelling Q-network with the given state dimension, hidden dimension, and number of hidden layers.
         """
         super(qNetworkDuelling, self).__init__()
-        layersDim = [stateDim]
-        layersDim += [hiddenDim for _ in range(numHiddenLayers)]
-        layersDim.append(actionDim + 1)
-        self.network = baseNet(layersDim)
+        self.advNetwork = baseNet([stateDim] + [hiddenDim for _ in range(numHiddenLayers)] + [actionDim])
+        self.valueNetwork = baseNet([stateDim] + [hiddenDim for _ in range(numHiddenLayers)] + [1])
 
     def forward(self, state):
-        output = self.network(state)
-        if state.dim() == 1:
-            V, Adv = output[:1], output[1:]
-        else:
-            V, Adv = output[:, :1], output[:, 1:]
-            
+        V = self.valueNetwork(state)
+        Adv = self.advNetwork(state)
         return V + Adv - Adv.mean(-1, keepdim=True)
         
     def save(self, file):
