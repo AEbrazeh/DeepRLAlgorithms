@@ -34,16 +34,14 @@ class qNetworkDuelling(nn.Module):
         layersDim.append(actionDim + 1)
         self.network = baseNet(layersDim)
 
-    def forward(self, state, useMax=True):
+    def forward(self, state):
         output = self.network(state)
         if state.dim() == 1:
             V, Adv = output[:1], output[1:]
         else:
             V, Adv = output[:, :1], output[:, 1:]
-        if useMax:
-            return V + Adv - Adv.max(-1, keepdim=True)[0]
-        else:
-            return V + Adv - Adv.mean(-1, keepdim=True)
+            
+        return V + Adv - Adv.mean(-1, keepdim=True)
         
     def save(self, file):
         torch.save(self, file)
