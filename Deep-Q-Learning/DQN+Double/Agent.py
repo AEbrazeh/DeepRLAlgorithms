@@ -114,7 +114,7 @@ class deepQLearningDouble(nn.Module):
             d = done[jj].to(device)
             s_ = state_[jj].to(device)
             self.updateCritic(s, a, r, d, s_)
-            self.updateTarget()
+        self.updateTarget()
             
     def save(self, file):
         """

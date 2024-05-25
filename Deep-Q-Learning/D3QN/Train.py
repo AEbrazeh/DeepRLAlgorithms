@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 env = gym.make('CartPole-v1')#, render_mode="human")
 stateDim = env.observation_space.shape[0]
 actionDim = env.action_space.n
-agent = deepQLearningDoubleDuelling(stateDim, actionDim, hiddenDim=32, numHiddenLayers=2, lr=1e-3)
+agent = deepQLearningDoubleDuelling(stateDim, actionDim, hiddenDim=32, numHiddenLayers=2, lr=1e-3, tau=0.1)
+print(agent.critic)
 
 numEpisodes = 100
 batchSize = 512
@@ -24,7 +25,7 @@ for ii in range(numEpisodes):
     while not d:
         numSteps += 1
         s = s_
-        eps = np.clip((numSteps - startSteps)/1000, 0, 1)
+        eps = np.clip((numSteps / startSteps) - 1, 0, 1)
         a = agent(s, eps)
         s_, r, terminated, truncated, _ = env.step(a)
         d = max(truncated, terminated)

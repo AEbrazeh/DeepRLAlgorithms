@@ -24,7 +24,7 @@ class deepQLearningDoubleDuelling(nn.Module):
                  numHiddenLayers,
                  bufferSize = 100000,
                  gamma=0.99,
-                 tau=1e-2,
+                 tau=1e-3,
                  lr = 1e-4):
         super(deepQLearningDoubleDuelling, self).__init__()
         
@@ -114,7 +114,7 @@ class deepQLearningDoubleDuelling(nn.Module):
             d = done[jj].to(device)
             s_ = state_[jj].to(device)
             self.updateCritic(s, a, r, d, s_)
-            self.updateTarget()
+        self.updateTarget()
             
     def save(self, file):
         """

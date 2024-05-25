@@ -4,7 +4,7 @@ import numpy as np
 from torch.distributions.normal import Normal
 
 class baseNet(nn.Module):
-    def __init__(self, layersDim):
+    def __init__(self, layersDim, lastLayerActivation = False):
         """
         Initializes a simple feed forward neural network.
 
@@ -19,6 +19,7 @@ class baseNet(nn.Module):
             self.network.append(nn.Linear(layersDim[ii], layersDim[ii+1]))
             self.network.append(nn.LeakyReLU(0.01))
         self.network.append(nn.Linear(layersDim[-2], layersDim[-1]))
+        if lastLayerActivation: self.network.append(nn.LeakyReLU(0.01))
         
     def forward(self, x):
         return self.network(x)
@@ -29,12 +30,16 @@ class qNetworkDuelling(nn.Module):
         Initialize the Duelling Q-network with the given state dimension, hidden dimension, and number of hidden layers.
         """
         super(qNetworkDuelling, self).__init__()
-        self.advNetwork = baseNet([stateDim] + [hiddenDim for _ in range(numHiddenLayers)] + [actionDim])
-        self.valueNetwork = baseNet([stateDim] + [hiddenDim for _ in range(numHiddenLayers)] + [1])
+        numHL1 = numHiddenLayers // 2
+        numHL2 = numHiddenLayers - numHL1 + 1
+        self.baseNetwork = baseNet([stateDim] + [hiddenDim for _ in range(numHL1)], lastLayerActivation=True)
+        self.advNetwork = baseNet([hiddenDim for _ in range(numHL2)] + [actionDim])
+        self.valueNetwork = baseNet([hiddenDim for _ in range(numHL2)] + [1])
 
     def forward(self, state):
-        V = self.valueNetwork(state)
-        Adv = self.advNetwork(state)
+        H = self.baseNetwork(state)
+        V = self.valueNetwork(H)
+        Adv = self.advNetwork(H)
         return V + Adv - Adv.mean(-1, keepdim=True)
         
     def save(self, file):
