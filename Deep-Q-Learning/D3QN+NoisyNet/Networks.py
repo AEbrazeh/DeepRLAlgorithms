@@ -40,10 +40,11 @@ class noisyLinear(nn.Module):
 class noisyNet(nn.Module):
     def __init__(self, layersDim, lastLayerActivation = False):
         """
-        Initializes a simple feed forward neural network.
+        Initializes a noisy feed forward neural network based on "Noisy Networks for Exploration" (https://arxiv.org/pdf/1706.10295) by Fortunato et al.
 
         Parameters:
             layersDim (list): The dimensions of the layers.
+            lastLayerActivation (bool): if True the activation function is applied on the final layer too. Default is False.
         Returns:
             None
         """
